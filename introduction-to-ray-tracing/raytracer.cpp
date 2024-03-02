@@ -33,7 +33,6 @@
 #else
 // Windows doesn't define these values by default, Linux does
 #define M_PI 3.141592653589793
-#define INFINITY 1e8
 #endif
 
 template<typename T>
@@ -110,7 +109,7 @@ public:
 //[comment]
 // This variable controls the maximum recursion depth
 //[/comment]
-#define MAX_RAY_DEPTH 5
+#define MAX_RAY_DEPTH 10
 
 float mix(const float &a, const float &b, const float &mix)
 {
@@ -222,11 +221,13 @@ void render(const std::vector<Sphere> &spheres)
     float invWidth = 1 / float(width), invHeight = 1 / float(height);
     float fov = 30, aspectratio = width / float(height);
     float angle = tan(M_PI * 0.5 * fov / 180.);
+    std::cout<< "angle: " << angle << std::endl;
     // Trace rays
     for (unsigned y = 0; y < height; ++y) {
         for (unsigned x = 0; x < width; ++x, ++pixel) {
             float xx = (2 * ((x + 0.5) * invWidth) - 1) * angle * aspectratio;
             float yy = (1 - 2 * ((y + 0.5) * invHeight)) * angle;
+            std::cout << "x: " << x << "y: " << y << "xx: " << xx << "yy: " << yy << "\n";
             Vec3f raydir(xx, yy, -1);
             raydir.normalize();
             *pixel = trace(Vec3f(0), raydir, spheres, 0);
@@ -251,7 +252,6 @@ void render(const std::vector<Sphere> &spheres)
 //[/comment]
 int main(int argc, char **argv)
 {
-    srand48(13);
     std::vector<Sphere> spheres;
     // position, radius, surface color, reflectivity, transparency, emission color
     spheres.push_back(Sphere(Vec3f( 0.0, -10004, -20), 10000, Vec3f(0.20, 0.20, 0.20), 0, 0.0));

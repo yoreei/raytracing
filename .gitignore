@@ -1,1 +1,8 @@
+.vscode/
 fourier-transform/
+*.exe
+*.ilk
+*.obj
+*.pdb
+*.ppm
+
